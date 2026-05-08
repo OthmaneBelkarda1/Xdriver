@@ -16,6 +16,7 @@ class Person(models.Model):
 
 class Passenger(Person):
     avg_rating = models.FloatField(default=0.0)
+    number_of_rides = models.IntegerField(default=0)
 
     class Meta:
         abstract = False

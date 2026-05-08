@@ -33,7 +33,7 @@ def publish_Ride(request):
             arrival_location=data.get('arrival_location'),
             departure_date_time=parse_datetime(data.get('departure_date_time')),
             available_seats=data.get('available_seats'),
-            price=data.get('price')
+            distance=data.get('distance')
         )
 
         return JsonResponse({
@@ -59,7 +59,7 @@ def viewRideHistory(request, id):
                 "arrival_location": ride.arrival_location,
                 "departure_date_time": ride.departure_date_time,
                 "available_seats": ride.available_seats,
-                "price": str(ride.price)  # Decimal → string for JSON
+                "distance": str(ride.distance)  # Decimal → string for JSON
             })
 
         return JsonResponse({
@@ -91,7 +91,7 @@ def SearchForRide(request, departure, arrival, date):
             "arrival_location",
             "departure_date_time",
             "available_seats",
-            "price"
+            "distance"
         ))
 
         return JsonResponse({
@@ -187,8 +187,8 @@ def edit_ride(request):
         if "available_seats" in data:
             ride.available_seats = data["available_seats"]
 
-        if "price" in data:
-            ride.price = data["price"]
+        if "distance" in data:
+            ride.distance = data["distance"]
 
         ride.save()
 
