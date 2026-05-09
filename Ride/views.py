@@ -28,7 +28,7 @@ def publish_Ride(request):
             return JsonResponse({"error": "Driver not found"}, status=404)
 
         ride = Ride.objects.create(
-            driver_id=driver,
+            driver=driver,
             departure_location=data.get('departure_location'),
             arrival_location=data.get('arrival_location'),
             departure_date_time=parse_datetime(data.get('departure_date_time')),
