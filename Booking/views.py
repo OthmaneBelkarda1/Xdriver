@@ -17,8 +17,9 @@ def Book_Ride(request):
      data=json.loads(request.body)
      Passenger_id=data.get('passenger_id')
      Ride_id=data.get('ride_id')
-     if not Passenger_id or not Ride_id:
-        return JsonResponse({"error": "passenger_id and ride_id are required"}, status=400)
+     Price=data.get('price')
+     if not Passenger_id or not Ride_id or not Price:
+        return JsonResponse({"error": "passenger_id, ride_id, and price are required"}, status=400)
      if not Passenger.objects.filter(id=Passenger_id).exists():
         return JsonResponse({"error": "Passenger not found"}, status=404)
      if not Ride.objects.filter(id=Ride_id).exists():
@@ -26,8 +27,9 @@ def Book_Ride(request):
      ride = Ride.objects.get(id=Ride_id)
      passenger = Passenger.objects.get(id=Passenger_id)
      booking = Booking.objects.create(
-        ride_id=ride.id,
-        passenger_id=passenger.id
+        ride=ride.id,
+        passenger=passenger.id,
+        price=Price
     )
      Ride.objects.filter(id=Ride_id).update(available_seats=ride.available_seats - 1)
     except Exception as e:
@@ -43,6 +45,7 @@ def viewRideHistoryByID(request, id):
             return JsonResponse({"error": "No booking history found for this passenger"}, status=404)
         history = []
         for booking in bookings:
+            bookings = Booking.objects.filter(passenger_id=id)
             ride = Ride.objects.get(id=booking.ride_id)
             driver=Driver.objects.get(id=ride.driver_id)
             history.append({
@@ -50,7 +53,8 @@ def viewRideHistoryByID(request, id):
                 "departure":ride.departure_location,
                 "arrival": ride.arrival_location,
                 "driver_First_Name": driver.first_name,
-                "driver_Last_Name": driver.last_name
+                "driver_Last_Name": driver.last_name,
+                "price": booking.price
             })
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)

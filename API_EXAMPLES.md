@@ -162,7 +162,8 @@ POST /book_ride/
 ```json
 {
   "passenger_id": 1,
-  "ride_id": 1
+  "ride_id": 1,
+  "price":25.0
 }
 ```
 
@@ -194,7 +195,8 @@ GET /ride_history/1
       "departure": "Casablanca",
       "arrival": "Rabat",
       "driver_First_Name": "Othmane",
-      "driver_Last_Name": "Belkarda"
+      "driver_Last_Name": "Belkarda",
+      "price":25.0
     }
   ]
 }

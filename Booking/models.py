@@ -9,4 +9,5 @@ class Booking(models.Model):
     ride = models.ForeignKey('Ride.Ride', on_delete=models.CASCADE)
     passenger = models.ForeignKey('Authentication.Passenger', on_delete=models.CASCADE)
     booking_date_time = models.DateTimeField(auto_now_add=True)
+    price=models.DecimalField(max_digits=10, decimal_places=2)
     
