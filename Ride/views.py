@@ -165,7 +165,7 @@ def edit_ride(request):
         ride = Ride.objects.get(id=ride_id)
 
         #  security check
-        if ride.driver_id.id != driver_id:
+        if ride.driver_id != driver_id:
             return JsonResponse({
                 "status": "error",
                 "message": "You are not allowed to edit this ride"
