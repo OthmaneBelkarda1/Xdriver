@@ -38,19 +38,18 @@ def Book_Ride(request):
 
 @csrf_exempt
 @require_http_methods(["GET"])
-def viewRideHistoryByID(request, id):
+def viewRideHistoryByID(request, passenger_id):
     try:
-        bookings = Booking.objects.filter(passenger_id=id)
+        bookings = Booking.objects.filter(passenger_id=passenger_id)
         if not bookings.exists():
             return JsonResponse({"error": "No booking history found for this passenger"}, status=404)
         history = []
         for booking in bookings:
-            bookings = Booking.objects.filter(passenger_id=id)
             ride = Ride.objects.get(id=booking.ride_id)
-            driver=Driver.objects.get(id=ride.driver_id)
+            driver = Driver.objects.get(id=ride.driver_id)
             history.append({
                 "ride_id": ride.id,
-                "departure":ride.departure_location,
+                "departure": ride.departure_location,
                 "arrival": ride.arrival_location,
                 "driver_First_Name": driver.first_name,
                 "driver_Last_Name": driver.last_name,
@@ -59,4 +58,3 @@ def viewRideHistoryByID(request, id):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
     return JsonResponse({"history": history}, status=200)
-
