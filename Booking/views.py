@@ -27,8 +27,8 @@ def Book_Ride(request):
      ride = Ride.objects.get(id=Ride_id)
      passenger = Passenger.objects.get(id=Passenger_id)
      booking = Booking.objects.create(
-        ride=ride.id,
-        passenger=passenger.id,
+        ride=ride,
+        passenger=passenger,
         price=Price
     )
      Ride.objects.filter(id=Ride_id).update(available_seats=ride.available_seats - 1)
