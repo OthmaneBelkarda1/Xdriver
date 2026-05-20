@@ -109,21 +109,21 @@ def SearchForRide(request, departure, arrival, date):
 @csrf_exempt
 @require_http_methods(["DELETE"])
 def delete_ride(request):
-    try:
-        if request.method != "DELETE":
-            return JsonResponse({
-                "status": "error",
-                "message": "Only DELETE method allowed"
-            }, status=405)
+    if request.method != "DELETE":
+        return JsonResponse({
+            "status": "error",
+            "message": "Only DELETE method allowed"
+        }, status=405)
 
-        data = json.loads(request.body)
+    try:
+        data = json.loads(request.body.decode("utf-8") or "{}")
         ride_id = data.get("ride_id")
-        driver_id = data.get("driver_id")
+        driver_id = int(data.get("driver_id") or 0)
 
         ride = Ride.objects.get(id=ride_id)
 
-       
-        if ride.driver_id.id != driver_id:
+        # si le FK s'appelle `driver` :
+        if ride.driver_id != driver_id:
             return JsonResponse({
                 "status": "error",
                 "message": "You are not allowed to delete this ride"
@@ -141,13 +141,11 @@ def delete_ride(request):
             "status": "error",
             "message": "Ride not found"
         }, status=404)
-
     except Exception as e:
         return JsonResponse({
             "status": "error",
             "message": str(e)
         }, status=500)
-    
 @csrf_exempt
 def edit_ride(request):
     try:
